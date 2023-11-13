@@ -1,4 +1,4 @@
-# my_parser_ishevchyk
+# pgn_parser
 
 Parser for educational purpose
 
