@@ -1,0 +1,13 @@
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+metadata_block = { "[" ~ (ASCII_ALPHANUMERIC)+ ~ " \"" ~ (ASCII_ALPHANUMERIC)+ ~ "\"]"}
+files = { 'a'..'h' }
+ranks = { '1' .. '8' }
+move_comment = { "{" ~ (ANY)* ~ "}" }
+piece = { ("K" | "Q" | "R" | "B" | "N")* }
+castle = { ("O-O" | "O-O-O") }
+move_piece = { piece ~ (files)? ~ "x"? ~ files ~ ranks }
+complete_move = { (move_piece | castle) ~ ("+" | "#") }
+move_pair = { (ASCII_DIGIT)+ ~ "." ~ complete_move ~ " " ~ complete_move? ~ move_comment? }
+move_list = { (move_pair)+ }
+game_result = { "1/2-1/2" | "1-0" | "0-1" }
+game = { SOI ~ (metadata_block)* ~ move_list ~ game_result ~ EOI}
