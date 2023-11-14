@@ -2,6 +2,7 @@
 name = "pgn_parser"
 version = "0.2.0"
 edition = "2021"
+authors = ["Illia Shevchyk"]
 description = "Parser for educational purpose"
 license = "MIT"
 
@@ -9,6 +10,7 @@ license = "MIT"
 
 [dependencies]
 anyhow = "1.0.75"
+clap = { version = "4.4.8", features = ["derive"] }
 pest = "2.7.5"
 pest_derive = "2.7.5"
 pest_generator = "2.7.5"
