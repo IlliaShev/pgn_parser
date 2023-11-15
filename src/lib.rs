@@ -1,4 +1,6 @@
 use pest::{Parser, Span};
+use pest::error::ErrorVariant;
+use pest::iterators::Pair;
 use pest_derive::Parser;
 
 #[derive(Parser)]
@@ -53,13 +55,19 @@ impl ToString for Move {
     }
 }
 
-pub fn parse_pgn(input: &str) -> Result<ParsedGame, pest::error::Error<Rule>> {
+pub fn extract_pairs(pair: Pair<Rule>, rule: Rule) -> Option<Pair<Rule>> {
+    pair
+        .into_inner()
+        .find(|pair| pair.as_rule() == rule)
+}
+
+pub fn parse_pgn(to_parse: &str) -> Result<ParsedGame, pest::error::Error<Rule>> {
     let mut parsed_game = ParsedGame {
         metadata: Vec::new(),
         moves: Vec::new(),
         game_result: String::new()
     };
-    let parse_result = PGNParser::parse(Rule::game, input);
+    let parse_result = PGNParser::parse(Rule::game, to_parse);
 
     return match parse_result {
         Ok(pairs) => {
@@ -67,24 +75,13 @@ pub fn parse_pgn(input: &str) -> Result<ParsedGame, pest::error::Error<Rule>> {
                 .into_iter()
                 .find(|pair| pair.as_rule() == Rule::game)
                 .ok_or_else(|| {
-                    pest::error::Error::<Rule>::new_from_span(
-                        pest::error::ErrorVariant::CustomError {
-                            message: "No composable function found".to_string(),
-                        },
-                        Span::new(input, 0, 0).unwrap(),
-                    )
+                    pest::error::Error::<Rule>::new_from_span(ErrorVariant::CustomError {
+                        message: String::from("Game wasn't found")}, Span::new(to_parse, 0, to_parse.len()).unwrap())
                 })?;
-            let move_list = pgn_game
-                .clone()
-                .into_inner()
-                .find(|pair| pair.as_rule() == Rule::move_list)
+            let move_list = extract_pairs(pgn_game.clone(), Rule::move_list)
                 .ok_or_else(|| {
-                    pest::error::Error::<Rule>::new_from_span(
-                        pest::error::ErrorVariant::CustomError {
-                            message: "No composable function found".to_string(),
-                        },
-                        Span::new(input, 0, 0).unwrap(),
-                    )
+                    pest::error::Error::<Rule>::new_from_span(ErrorVariant::CustomError {
+                        message: String::from("Move list wasn't found")}, Span::new(to_parse, 0, to_parse.len()).unwrap())
                 })?;
             let metadata_block: Vec<(String, String)> = pgn_game
                 .clone()
@@ -101,18 +98,11 @@ pub fn parse_pgn(input: &str) -> Result<ParsedGame, pest::error::Error<Rule>> {
                     }
                 })
                 .collect();
-            let game_result = pgn_game
-                .clone()
-                .into_inner()
-                .find(|pair| pair.as_rule() == Rule::game_result)
+            let game_result = extract_pairs(pgn_game.clone(), Rule::game_result)
                 .ok_or_else(|| {
-                    pest::error::Error::<Rule>::new_from_span(
-                        pest::error::ErrorVariant::CustomError {
-                            message: "No composable function found".to_string(),
-                        },
-                        Span::new(input, 0, 0).unwrap(),
-                    )
-                })?.as_str().to_string();
+                    pest::error::Error::<Rule>::new_from_span(ErrorVariant::CustomError {
+                        message: String::from("Game result wasn't found")}, Span::new(to_parse, 0, to_parse.len()).unwrap())
+                })?;
 
             let moves_list: Vec<(Move, Option<Move>)> = move_list
                 .clone()
@@ -165,7 +155,7 @@ pub fn parse_pgn(input: &str) -> Result<ParsedGame, pest::error::Error<Rule>> {
                     }
                 })
                 .collect();
-            parsed_game.game_result = game_result;
+            parsed_game.game_result = game_result.as_str().to_string();
             parsed_game.moves = moves_list;
             parsed_game.metadata = metadata_block;
             return Ok(parsed_game)
