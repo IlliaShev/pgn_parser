@@ -1,9 +1,11 @@
-use std::path::PathBuf;
 use clap::{Parser, Subcommand};
+use std::path::PathBuf;
 
 #[derive(Parser)]
 #[command(author, version)]
-#[command(about = "pgn_parser - is a tool that allows you to parse chess games in PGN format.\nAuthor - Illia Shevchyk <illia.shevchyk@ukma.edu.ua>")]
+#[command(
+    about = "pgn_parser - is a tool that allows you to parse chess games in PGN format.\nAuthor - Illia Shevchyk <illia.shevchyk@ukma.edu.ua>"
+)]
 pub struct Cli {
     #[command(subcommand)]
     pub(crate) command: Option<Commands>,
@@ -19,5 +21,5 @@ pub enum Commands {
         ///provide output file
         #[arg(short, long, value_name = "OUTPUT")]
         output: Option<PathBuf>,
-    }
+    },
 }
