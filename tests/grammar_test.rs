@@ -1,7 +1,7 @@
 mod tests {
     use anyhow::anyhow;
-    use pgn_parser::*;
     use pest::Parser;
+    use pgn_parser::*;
 
     #[test]
     fn test_word() -> anyhow::Result<()> {
@@ -40,7 +40,6 @@ mod tests {
             .next()
             .ok_or_else(|| anyhow!("no comment was found"))?;
 
-
         assert_eq!(pair.as_str(), "{ Comment }");
         Ok(())
     }
@@ -53,7 +52,6 @@ mod tests {
         let move_rook = "Rae1";
         let move_queen = "Qa2";
         let move_pawn = "e4";
-
 
         let pair_king = PGNParser::parse(Rule::move_piece_without_capture, move_king);
         assert!(pair_king.is_ok());
@@ -75,7 +73,6 @@ mod tests {
         Ok(())
     }
 
-
     #[test]
     fn test_complete_move() {
         let move_with_capture = "exf5";
@@ -94,7 +91,6 @@ mod tests {
 
         let pair_capture = PGNParser::parse(Rule::complete_move, move_with_capture);
         assert!(pair_capture.is_ok());
-
     }
 
     #[test]
@@ -129,7 +125,6 @@ mod tests {
         let pair_incorrect_result = PGNParser::parse(Rule::game_result, incorrect_result);
         assert!(pair_incorrect_result.is_err());
     }
-
 
     #[test]
     fn test_game1() -> Result<(), pest::error::Error<Rule>> {
