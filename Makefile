@@ -6,7 +6,7 @@ test:
 
 commit-and-push:
 	git add .
-	git commit -m "Fix clippy errors and add makefile"
+	git commit -m "Update parser version"
 	git push origin
 
 publish:
