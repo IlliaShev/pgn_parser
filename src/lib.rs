@@ -5,12 +5,12 @@ use pest_derive::Parser;
 
 #[derive(Parser)]
 #[grammar = "pgn.pest"]
-struct PGNParser;
+pub struct PGNParser;
 
 pub struct ParsedGame {
-    metadata: Vec<(String, String)>,
-    moves: Vec<(Move, Option<Move>)>,
-    game_result: String,
+    pub metadata: Vec<(String, String)>,
+    pub moves: Vec<(Move, Option<Move>)>,
+    pub game_result: String,
 }
 
 impl ToString for ParsedGame {
