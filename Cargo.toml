@@ -1,9 +1,9 @@
 [package]
 name = "pgn_parser"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 authors = ["Illia Shevchyk"]
-description = "Parser for educational purpose"
+description = "This is a simple PGN (Portable Game Notation) parser for chess games written in Rust. It allows you to parse PGN files and extract information about chess games."
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
