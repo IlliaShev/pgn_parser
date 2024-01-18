@@ -151,4 +151,56 @@ mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_game3() -> Result<(), pest::error::Error<Rule>> {
+        let input = std::fs::read_to_string("games/game3.txt").expect("Unable to read file");
+
+        let game = pgn_parser::parse_pgn(&input)?;
+
+        assert_eq!(game.game_result, "1/2-1/2");
+        assert_eq!(game.moves.len(), 43);
+        assert_eq!(game.metadata.len(), 7);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_game4() -> Result<(), pest::error::Error<Rule>> {
+        let input = std::fs::read_to_string("games/game4.txt").expect("Unable to read file");
+
+        let game = pgn_parser::parse_pgn(&input)?;
+
+        assert_eq!(game.game_result, "1-0");
+        assert_eq!(game.moves.len(), 23);
+        assert_eq!(game.metadata.len(), 7);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_game5() -> Result<(), pest::error::Error<Rule>> {
+        let input = std::fs::read_to_string("games/game5.txt").expect("Unable to read file");
+
+        let game = pgn_parser::parse_pgn(&input)?;
+
+        assert_eq!(game.game_result, "1-0");
+        assert_eq!(game.moves.len(), 44);
+        assert_eq!(game.metadata.len(), 8);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_game6() -> Result<(), pest::error::Error<Rule>> {
+        let input = std::fs::read_to_string("games/game6.txt").expect("Unable to read file");
+
+        let game = pgn_parser::parse_pgn(&input)?;
+
+        assert_eq!(game.game_result, "1-0");
+        assert_eq!(game.moves.len(), 17);
+        assert_eq!(game.metadata.len(), 8);
+
+        Ok(())
+    }
 }
