@@ -79,6 +79,8 @@ mod tests {
         let castle = "O-O";
         let move_with_checkmate = "Qe8#";
         let move_with_check = "Qe8+";
+        let pawn_promotion = "b8=Q";
+        let pawn_promotion_with_capture = "cxd8=N";
 
         let pair_castle = PGNParser::parse(Rule::complete_move, castle);
         assert!(pair_castle.is_ok());
@@ -91,18 +93,32 @@ mod tests {
 
         let pair_capture = PGNParser::parse(Rule::complete_move, move_with_capture);
         assert!(pair_capture.is_ok());
+
+        let pair_promotion = PGNParser::parse(Rule::complete_move, pawn_promotion);
+        assert!(pair_promotion.is_ok());
+
+        let pair_promotion_capture = PGNParser::parse(Rule::complete_move, pawn_promotion_with_capture);
+        assert!(pair_promotion_capture.is_ok());
     }
 
     #[test]
     fn test_move_pair() {
         let move_pair = "1. e4 e5";
         let incorrect_move_pair = "e4 e5";
+        let ruy_lopez_opening = "3. Bb5 {This opening is called the Ruy Lopez.} 3... a6";
+        let pawn_promotion_check_and_capture = "23. e8=Q+ Rxe8";
 
         let pair_move = PGNParser::parse(Rule::move_pair, move_pair);
         assert!(pair_move.is_ok());
 
         let incorrect_pair_move = PGNParser::parse(Rule::move_pair, incorrect_move_pair);
         assert!(incorrect_pair_move.is_err());
+
+        let ruy_lopez_move = PGNParser::parse(Rule::move_pair, ruy_lopez_opening);
+        assert!(ruy_lopez_move.is_ok());
+
+        let pair_promotion_move = PGNParser::parse(Rule::move_pair, pawn_promotion_check_and_capture);
+        assert!(pair_promotion_move.is_ok());
     }
 
     #[test]
@@ -200,6 +216,19 @@ mod tests {
         assert_eq!(game.game_result, "1-0");
         assert_eq!(game.moves.len(), 17);
         assert_eq!(game.metadata.len(), 8);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_game7() -> Result<(), pest::error::Error<Rule>> {
+        let input = std::fs::read_to_string("games/game7.txt").expect("Unable to read file");
+
+        let game = pgn_parser::parse_pgn(&input)?;
+
+        assert_eq!(game.game_result, "1-0");
+        assert_eq!(game.moves.len(), 24);
+        assert_eq!(game.metadata.len(), 16);
 
         Ok(())
     }
