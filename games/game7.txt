@@ -1,0 +1,21 @@
+[Event "Casual Game"]
+[Site "Berlin GER"]
+[Date "1852.??.??"]
+[Round "?"]
+[White "Adolf Anderssen"]
+[Black "Jean Dufresne"]
+[Result "1-0"]
+[ECO "C52"]
+[Annotator "Hooper,D"]
+[PlyCount "47"]
+[EventDate "1852.??.??"]
+[EventType "game"]
+[EventRounds "1"]
+[EventCountry "GER"]
+[Source "ChessBase"]
+[SourceDate "1999.07.01"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Ba5 6. d4 exd4 7. O-O d3 8. Qb3
+Qf6 9. e5 Qg6 10. Re1 Nge7 11. Ba3 b5 12. Qxb5 Rb8 13. Qa4 Bb6 14. Nbd2 Bb7 15.
+Ne4 Na5 16. Bxf7+ Qxf7 17. e6 Qg6 18. Qxd7+ Kf8 19. Qxe7+ Kg8 20. Nf6+ gxf6
+21. Qxf6 Qg7 22. e7 Bxf3 23. e8=Q+ Rxe8 24. Rxe8+ 1-0

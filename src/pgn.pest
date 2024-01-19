@@ -5,12 +5,16 @@ files = { 'a'..'h' }
 ranks = { '1' .. '8' }
 move_comment = { "{" ~ (!("}") ~ ANY)* ~ "}" }
 piece = { ("K" | "Q" | "R" | "B" | "N")? }
+promoted_ranks = { ( "1" | "8" )}
+promoted_piece = { ("Q" | "R" | "B" | "N")? }
 castle = { ("O-O-O" | "O-O") }
 move_piece_with_capture = { piece ~ (files)? ~ "x" ~ files ~ ranks }
-move_piece_without_capture = { piece ~ (files){1,2} ~ ranks }
-move_piece = { (move_piece_with_capture | move_piece_without_capture)}
+move_piece_without_capture = { piece ~ (ranks)? ~ (files){1,2} ~ ranks }
+move_pawn_promotion = {files ~ promoted_ranks ~ "=" ~ promoted_piece}
+move_pawn_promotion_with_capture = {files ~ "x" ~ files ~ promoted_ranks ~ "=" ~ promoted_piece}
+move_piece = { (move_pawn_promotion | move_pawn_promotion_with_capture | move_piece_with_capture | move_piece_without_capture)}
 complete_move = { (move_piece | castle) ~ ("+" | "#")? }
-move_pair = { (ASCII_DIGIT)+ ~ "." ~ complete_move ~ move_comment? ~ complete_move? ~ move_comment? }
+move_pair = { (ASCII_DIGIT)+ ~ "." ~ complete_move ~ move_comment? ~ ((ASCII_DIGIT)+ ~ "...")? ~ complete_move? ~ move_comment? }
 move_list = { (move_pair)+ }
 game_result = { "1/2-1/2" | "1-0" | "0-1" }
 game = { SOI ~ (metadata_block)* ~ move_list ~ game_result ~ EOI}
