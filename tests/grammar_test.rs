@@ -81,6 +81,7 @@ mod tests {
         let move_with_check = "Qe8+";
         let pawn_promotion = "b8=Q";
         let pawn_promotion_with_capture = "cxd8=N";
+        let move_disambiguation = "R2e5";
 
         let pair_castle = PGNParser::parse(Rule::complete_move, castle);
         assert!(pair_castle.is_ok());
@@ -99,6 +100,9 @@ mod tests {
 
         let pair_promotion_capture = PGNParser::parse(Rule::complete_move, pawn_promotion_with_capture);
         assert!(pair_promotion_capture.is_ok());
+
+        let pair_disambiguation = PGNParser::parse(Rule::complete_move, move_disambiguation);
+        assert!(pair_disambiguation.is_ok());
     }
 
     #[test]
